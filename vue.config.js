@@ -1,4 +1,4 @@
 module.exports = {
-  outputDir: "./docs",
+  outputDir: "../../someotherplace/onedrive/docs",
   publicPath: "/moon-starter-vue"
 }

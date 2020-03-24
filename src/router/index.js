@@ -12,6 +12,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: loadView("Home.vue")
+  },
+  {
+    path: '/moon',
+    name: 'Moon',
+    component: loadView("Moon.vue")
   }
 ];
 

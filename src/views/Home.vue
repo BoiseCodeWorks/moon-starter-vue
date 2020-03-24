@@ -1,61 +1,81 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div class="container-fluid mt-3">
       <div class="row">
-        <div class="col-12">
-          <h1 class="text-center">Moon Miner AWESOME</h1>
+        <div class="col-3">
+          <h2>All Spells</h2>
+          <div class="spells">
+            <div
+              class="spell action"
+              v-for="spell in spells"
+              :key="spell.index"
+              @click="getSpell(spell)"
+            >
+              <span>{{spell.name}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <active-spell />
+        </div>
+        <div class="col-3">
+          <h2>My Spells</h2>
+          <div class="spells">
+            <div
+              class="spell action"
+              v-for="spell in mySpells"
+              :key="spell.index"
+              @click="setSpell(spell)"
+            >
+              <span>{{spell.name}}</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col text-center">
-          <Moon color="orange" />
-        </div>
-        <div class="col text-center">
-          <Moon color="purple" />
-        </div>
-        <div class="col text-center">
-          <Moon color="chartreuse" />
-        </div>
-        <div class="col text-center">
-          <Moon />
-        </div>
-      </div>
-      <button :disabled="cheese < 15" @click="buyIdleUpgrade">Buy Rover</button>
+      <div class="d-flex"></div>
+
+      <div></div>
     </div>
   </div>
 </template>
 
+
 <script>
 export default {
   name: "Home",
-  data() {
-    return {
-      idleCount: 0,
-      cheese: 15
-    };
+  computed: {
+    spells() {
+      return this.$store.state.SpellsStore.spells;
+    },
+    mySpells() {
+      return this.$store.state.MySpellsStore.spells;
+    }
+  },
+  mounted() {
+    this.getSpells();
   },
   methods: {
-    buyIdleUpgrade() {
-      if (this.idleCount == 0) {
-        this.startIdleMiner();
-        this.idleCount++;
-      }
+    getSpells() {
+      this.$store.dispatch("getSpellsMetaData");
+      this.$store.dispatch("getMySpells");
     },
-    startIdleMiner() {
-      setInterval(this.idleMine, 3000);
+    getSpell(spell) {
+      this.$store.dispatch("getSpellDetails", spell);
     },
-    idleMine() {
-      this.$store.dispatch("idleMiner");
+    setSpell(spell) {
+      this.$store.commit("setActiveSpell", spell);
     }
   }
 };
 </script>
 
-<style>
-.home {
-  height: 100vh;
-  width: 100vw;
-  background-image: url(../assets/logo.png);
-  background-size: contain;
+<style lang="scss">
+.action {
+  opacity: 0.8;
+  transition: all 0.2s linear;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
 }
 </style>
